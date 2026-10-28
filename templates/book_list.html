@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книжный каталог</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #243447;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dce3eb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            background-color: #e9edf2;
+            padding: 10px;
+        }
+
+        .book-info {
+            padding: 18px;
+        }
+
+        .book-info h2 {
+            font-size: 20px;
+            margin: 0 0 12px;
+        }
+
+        .book-info p {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .price {
+            font-size: 20px !important;
+            font-weight: bold;
+            color: #188754;
+            margin-top: 15px !important;
+        }
+
+        .button {
+            display: block;
+            text-align: center;
+            background-color: #2878d0;
+            color: white;
+            text-decoration: none;
+            padding: 11px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #185ca8;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 Книжный каталог</h1>
+    <p>Найди книгу по душе</p>
+</header>
+
+<main class="container">
+
+    {% if book %}
+
+        <div class="book-grid">
+
+            {% for item in book %}
+
+                <article class="book-card">
+
+                    {% if item.image %}
+                        <img
+                            src="{{ item.image.url }}"
+                            alt="{{ item.title }}"
+                            class="book-image"
+                        >
+                    {% else %}
+                        <div class="book-image">
+                            Обложка отсутствует
+                        </div>
+                    {% endif %}
+
+                    <div class="book-info">
+
+                        <h2>{{ item.title }}</h2>
+
+                        <p>
+                            <strong>Автор:</strong>
+                            {{ item.author }}
+                        </p>
+
+                        <p>
+                            <strong>Жанр:</strong>
+                            {{ item.genre_book }}
+                        </p>
+
+                        <p>
+                            <strong>Год издания:</strong>
+                            {{ item.publication_year }}
+                        </p>
+
+                        <p>
+                            <strong>Издательство:</strong>
+                            {{ item.publisher }}
+                        </p>
+
+                        <p class="price">
+                            {{ item.price }} сом
+                        </p>
+
+                        <a
+                            href="{% url 'book_detail' id=item.id %}"
+                            class="button"
+                        >
+                            Подробнее
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message">
+            <h2>Пока книг нет</h2>
+            <p>Добавь книги через панель администратора Django.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+
+<footer>
+    Книжный каталог · Django
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            background-color: #243447;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .book-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 35px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .book-cover {
+            flex: 1 1 250px;
+            max-width: 320px;
+        }
+
+        .book-cover img {
+            width: 100%;
+            max-height: 430px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .no-image {
+            padding: 40px 15px;
+            background-color: #e9edf2;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .book-info {
+            flex: 2 1 300px;
+        }
+
+        .book-info h1 {
+            margin-top: 0;
+            color: #243447;
+        }
+
+        .book-info p {
+            font-size: 16px;
+            line-height: 1.7;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .price {
+            color: #188754;
+            font-size: 26px !important;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #2878d0;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #185ca8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .book-detail {
+                padding: 20px;
+            }
+
+            .book-cover {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>📚 Книжный каталог</h2>
+</header>
+
+<main class="container">
+
+    <article class="book-detail">
+
+        <div class="book-cover">
+
+            {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.title }}">
+            {% else %}
+                <div class="no-image">
+                    Обложка отсутствует
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="book-info">
+
+            <h1>{{ book.title }}</h1>
+
+            <p>
+                <strong>Автор:</strong>
+                {{ book.author }}
+            </p>
+
+            <p>
+                <strong>Жанр:</strong>
+                {{ book.genre_book }}
+            </p>
+
+            <p>
+                <strong>Год издания:</strong>
+                {{ book.publication_year }}
+            </p>
+
+            <p>
+                <strong>Количество страниц:</strong>
+                {{ book.pages }}
+            </p>
+
+            <p>
+                <strong>Издательство:</strong>
+                {{ book.publisher }}
+            </p>
+
+            <p class="price">
+                {{ book.price }} сом
+            </p>
+
+            <a href="{% url 'book_list' %}" class="button">
+                ← Вернуться к каталогу
+            </a>
+
+        </div>
+
+    </article>
+
+</main>
+
+<footer>
+    Книжный каталог · Django
+</footer>
+
+</body>
+</html>
