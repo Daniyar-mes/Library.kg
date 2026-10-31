@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туры по Кыргызстану</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #333;
+        }
+
+        header {
+            background: #245b75;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .tour-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .tour-card h2 {
+            color: #245b75;
+            margin-top: 0;
+        }
+
+        .location {
+            color: #16865c;
+            font-weight: bold;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .categories {
+            margin-top: 15px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e5f1f6;
+            color: #245b75;
+            padding: 6px 10px;
+            border-radius: 15px;
+            margin: 3px;
+            font-size: 13px;
+        }
+
+        .date {
+            margin-top: 15px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+        }
+
+        footer {
+            background: #245b75;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Туры по Кыргызстану</h1>
+    <p>Открой для себя красоту нашей страны!</p>
+</header>
+
+<div class="container">
+
+    {% if tour %}
+    <h2 style="color: red;">БРОНИРОВАНИЙ: {{ booking.count }}</h2>
+
+        <div class="tour-container">
+
+            {% for item in tour %}
+
+                <div class="tour-card">
+
+                    <h2>{{ item.title }}</h2>
+
+                    <p class="location">
+                        📍 {{ item.location }}
+                    </p>
+
+                    <p class="description">
+                        {{ item.description|default:"Описание пока отсутствует." }}
+                    </p>
+
+                    <div class="categories">
+                        {% for category in item.categories.all %}
+                            <span class="category">
+                                {{ category.category_tour }}
+                            </span>
+                        {% empty %}
+                            <span>Категории не указаны</span>
+                        {% endfor %}
+                    </div>
+
+                    <p class="date">
+                        Дата добавления: {{ item.booking_date|date:"d.m.Y" }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <h2>Кто забронировал туры</h2>
+
+{% for item in booking %}
+    <div class="tour-card">
+        <h3>Имя: {{ item.person.name }}</h3>
+        <p>Забронированный тур: {{ item.tour_booking.title }}</p>
+    </div>
+{% empty %}
+    <p>Пока бронирований нет.</p>
+{% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>Пока туров нет</h2>
+            <p>Здесь скоро появятся интересные предложения!</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+<footer>
+    <p>© 2026 Туры по Кыргызстану</p>
+</footer>
+
+</body>
+</html>
