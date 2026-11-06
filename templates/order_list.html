@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список заказов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #243b55;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .add-btn {
+            display: inline-block;
+            background: #243b55;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #243b55;
+            color: white;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .edit {
+            color: #087c36;
+        }
+
+        .delete {
+            color: #d62828;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Список заказов маркетплейса</h2>
+
+    <a href="{% url 'create_order' %}" class="add-btn">
+        + Добавить заказ
+    </a>
+
+    <table>
+        <tr>
+            <th>№</th>
+            <th>Номер заказа</th>
+            <th>Покупатель</th>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Фото</th>
+            <th>Цена</th>
+            <th>Статус</th>
+            <th>Дата заказа</th>
+            <th>Действия</th>
+        </tr>
+
+        {% for item in order %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>{{ item.order_number }}</td>
+
+            <td>{{ item.customer_name }}</td>
+
+            <td>{{ item.product_name }}</td>
+
+            <td>{{ item.quantity }}</td>
+
+            <td>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="Фото товара">
+                {% endif %}
+            </td>
+
+            <td>{{ item.price }}</td>
+
+            <td>{{ item.get_status_display }}</td>
+
+            <td>{{ item.created_at|date:"d.m.Y" }}</td>
+
+            <td>
+                <a class="edit"
+                   href="{% url 'update_order' item.id %}">
+                    Изменить
+                </a>
+
+                <br><br>
+
+                <form method="POST"
+                      action="{% url 'drop_order' item.id %}">
+                    {% csrf_token %}
+
+                    <button type="submit" class="delete">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="10">Заказов пока нет</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
