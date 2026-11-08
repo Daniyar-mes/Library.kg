@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Личный кабинет</h4>
+                        <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Выйти</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center border-end">
+                                {% if user.avatar %}
+                                    <img src="/media/{{ user.avatar }}" alt="Аватар" class="img-fluid rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px; font-size: 48px;">
+                                        👤
+                                    </div>
+                                {% endif %}
+                                <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                                <p class="text-muted small">{{ user.city }}</p>
+                            </div>
+
+                            <div class="col-md-8">
+                                <h5 class="border-bottom pb-2 mb-3">Информация о себе</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th style="width: 40%">Email (Логин):</th>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Имя:</th>
+                                        <td>{{ user.first_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Фамилия:</th>
+                                        <td>{{ user.last_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Телефон:</th>
+                                        <td>{{ user.phone_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Дата рождения:</th>
+                                        <td>{{ user.birth_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Пол:</th>
+                                        <td>
+                                            {% if user.gender == 'Male' %}Мужской{% elif user.gender == 'Female' %}Женский{% else %}{{ user.gender }}{% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Город:</th>
+                                        <td>{{ user.city }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

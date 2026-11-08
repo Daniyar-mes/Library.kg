@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'holiday_tour',
     'myShop',
     'orders',
+    'accounts',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -130,5 +132,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
+
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }

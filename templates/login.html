@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        .captcha { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+        .captcha img { border-radius: 5px; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4 class="mb-0">Вход в систему</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if error %}
+                            <div class="alert alert-danger text-center py-2">{{ error }}</div>
+                        {% endif %}
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <!-- Выводим email и пароль -->
+                            <div class="mb-3">
+                                <label class="form-label">Электронная почта</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Пароль</label>
+                                {{ form.password }}
+                                {% if form.password.errors %}<div class="text-danger small">{{ form.password.errors }}</div>{% endif %}
+                            </div>
+
+                            <!-- Выводим Капчу -->
+                            <div class="mb-4 bg-light p-3 border rounded">
+                                <label class="form-label d-block fw-bold">{{ form.captcha.label }}</label>
+                                <div class="captcha-container">
+                                    {{ form.captcha }}
+                                </div>
+                                {% if form.captcha.errors %}
+                                    <div class="text-danger small mt-1">Неверно введен текст с картинки!</div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">Войти</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{% url 'register' %}" class="text-decoration-none">Еще нет аккаунта? Зарегистрироваться</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let captchaInput = document.querySelector('.captcha-container input');
+            if (captchaInput) {
+                captchaInput.classList.add('form-control');
+                captchaInput.setAttribute('placeholder', 'Введите код здесь');
+            }
+        });
+    </script>
+</body>
+</html>
