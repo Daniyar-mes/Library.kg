@@ -81,6 +81,12 @@
             font-weight: bold;
         }
 
+        .views {
+            color: #777;
+            font-size: 14px !important;
+            border-bottom: none !important;
+        }
+
         .button {
             display: inline-block;
             background-color: #2878d0;
@@ -138,6 +144,10 @@
         <div class="book-info">
 
             <h1>{{ book.title }}</h1>
+
+            <p class="views">
+                👁 Количество просмотров: {{ book.views }}
+            </p>
 
             <p>
                 <strong>Автор:</strong>

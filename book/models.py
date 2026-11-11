@@ -25,6 +25,8 @@ class Book(models.Model):
 
     genre_book = models.CharField(max_length=200, choices=GENRE_BOOK, verbose_name='жанры книг')
     created_at = models.DateTimeField(auto_now_add=True)
+    views = models.PositiveIntegerField(default=0, null=True)
+    
 
     class Meta:
         verbose_name = 'книги'

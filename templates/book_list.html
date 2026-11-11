@@ -119,6 +119,13 @@
 </head>
 
 <body>
+    <form action="{% url 'search' %}" method="GET", enctype="multipart/form-data">
+        <input type="search" type="text" name="q" placeholder="ПОИСК">
+        <button type="submit">ПОИСК</button>
+
+    </form>
+
+
 
 <header>
     <h1>📚 Книжный каталог</h1>
@@ -187,6 +194,24 @@
                 </article>
 
             {% endfor %}
+
+            <div class="pagination">
+
+    {% if book.has_previous %}
+        <a href="?page=1">Первая</a>
+        <a href="?page={{ book.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    <span>
+        Страница {{ book.number }} из {{ book.paginator.num_pages }}
+    </span>
+
+    {% if book.has_next %}
+        <a href="?page={{ book.next_page_number }}">Вперёд</a>
+        <a href="?page={{ book.paginator.num_pages }}">Последняя</a>
+    {% endif %}
+
+</div>
 
         </div>
 

@@ -1,15 +1,37 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from book.models import Book
+from django.core.paginator import Paginator
+from django.db.models import F
+
+def book_search_view(request):
+    book = request.GET.get('q', '')
+    if book:
+        book = Book.objects.filter(title__icontains = book)
+    else:
+        return HttpResponse("Блог не найден")
+    return render(request, 'book_list.html', {'book': book})
 
 def book_list_view(request):
     if request.method == "GET":
         book = Book.objects.all().order_by('-id')
-    return render(request, 'book_list.html', {'book': book})
+        paginator_book = Paginator(book, 4)
+        page = request.GET.get('page')
+        page_obj = paginator_book.get_page(page)
+    return render(request, 'book_list.html', {'book': page_obj})
 
 def book_detail_view(request, id):
     book_id = get_object_or_404(Book, id=id)
+    views_book = request.session.get('viewed_book', [])
+    if id not in views_book:
+        book_id.views = F("views") + 1
+        book_id.save()
+        book_id.refresh_from_db()
+    views_book.append(id)
+    request.session['viewed_book'] = views_book
     return render(request, 'book_detail.html', {'book': book_id})
+    
+
 
 def about_me(request):
     if request.method == "GET":
