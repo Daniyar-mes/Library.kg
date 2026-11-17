@@ -1,0 +1,7 @@
+ <h1>Вы действительно хотите удалить товар - {{ order_id.product_name }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">ДА</button>
+    </form>
+
+    <a href="{% url 'order_list' %}">НЕТ | Перейти в список товаров</a>
