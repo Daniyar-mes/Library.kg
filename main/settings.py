@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'orders',
     'accounts',
     'captcha',
+    'CineBoard',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media' 
+LOGIN_REDIRECT_URL = 'movie'
+LOGOUT_REDIRECT_URL = 'movie'
+LOGIN_URL = 'login'
 
 
 

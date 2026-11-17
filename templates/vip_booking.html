@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование VIP-места</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        input[type="text"], select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; margin-top: 4px; }
+        .btn { padding: 9px 16px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; }
+        .btn-yellow { background: #ffc107; color: #000; font-weight: bold; }
+        .btn-gray { background: #6c757d; color: #fff; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{% url 'movie' %}" class="btn btn-gray">← Назад</a>
+    <h3>Бронирование VIP-места</h3>
+    <p style="color:#666; font-size:14px;">Один пользователь может забронировать только 1 VIP-место.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-yellow">Забронировать</button>
+    </form>
+</div>
+</body>
+</html>

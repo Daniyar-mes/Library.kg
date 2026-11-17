@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мое VIP место</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 40px 20px; color: #333; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; }
+        .btn { padding: 9px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; background: #007bff; color: #fff; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>⭐ Ваше VIP-место забронировано!</h2>
+    <p style="font-size:18px;">Фильм: <b>{{ vip.movie.title }}</b></p>
+    <p style="font-size:18px;">Место: <b>{{ vip.seat_number }}</b></p>
+    <a href="{% url 'movie' %}" class="btn">К списку фильмов</a>
+</div>
+</body>
+</html>

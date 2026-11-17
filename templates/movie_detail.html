@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }}</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .box { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 25px; }
+        .movie-flex { display: flex; gap: 25px; flex-wrap: wrap; }
+        .movie-flex img { width: 280px; border-radius: 6px; object-fit: cover; }
+        .movie-info { flex: 1; min-width: 260px; }
+        .btn { padding: 8px 14px; border: none; border-radius: 4px; text-decoration: none; font-size: 14px; cursor: pointer; display: inline-block; color: #fff; }
+        .btn-gray { background: #6c757d; margin-bottom: 15px; }
+        .btn-yellow { background: #ffc107; color: #000; }
+        .btn-red { background: #dc3545; }
+        .btn-blue { background: #007bff; }
+        .badge { background: #e9ecef; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 4px; }
+        .comment { border-bottom: 1px solid #eee; padding: 12px 0; }
+        .alert { background: #fff3cd; color: #856404; padding: 12px; border-radius: 4px; margin-bottom: 15px; }
+        textarea, input[type="number"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{% url 'movie' %}" class="btn btn-gray">← Назад к списку</a>
+
+    <div class="box">
+        <div class="movie-flex">
+            {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+            {% endif %}
+            <div class="movie-info">
+                <h2 style="margin-top:0;">{{ movie.title }} ({{ movie.release_year }})</h2>
+                <p><b>Режиссер:</b> {{ movie.director }}</p>
+                <p><b>Страна:</b> {{ movie.country }}</p>
+                <p><b>Продолжительность:</b> {{ movie.duration }} мин.</p>
+                <p><b>Жанры:</b>
+                    {% for genre in movie.genres.all %}
+                        <span class="badge">{{ genre.name }}</span>
+                    {% endfor %}
+                </p>
+                <p style="line-height: 1.5;">{{ movie.description }}</p>
+
+                {% if user.is_authenticated %}
+                    <div style="margin-top: 20px;">
+                        <a href="{% url 'movie_edit' movie.id %}" class="btn btn-yellow">Редактировать</a>
+                        <a href="{% url 'movie_delete' movie.id %}" class="btn btn-red">Удалить</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>Комментарии ({{ comments.count }})</h3>
+
+        {% if user.is_authenticated %}
+            <form method="post" style="margin-bottom: 20px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-blue">Оставить комментарий</button>
+            </form>
+        {% else %}
+            <div class="alert">
+                Чтобы оставить комментарий, пожалуйста, <a href="{% url 'login' %}">войдите в аккаунт</a>.
+            </div>
+        {% endif %}
+
+        {% for comment in comments %}
+            <div class="comment">
+                <b>{{ comment.user.username }}</b>
+                <span class="badge" style="background:#ffc107;">Оценка: {{ comment.mark }}/5</span>
+                <small style="color:#777; margin-left:8px;">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                <p style="margin: 6px 0 0;">{{ comment.description }}</p>
+            </div>
+        {% empty %}
+            <p style="color:#777;">Комментариев пока нет.</p>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CineBoard</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'movie' %}">🎬 CineBoard</a>
+        <div class="d-flex gap-2 align-items-center">
+            {% if user.is_authenticated %}
+                <span class="text-light me-2">Пользователь: <b>{{ user.username }}</b></span>
+                <a href="{% url 'movie_add' %}" class="btn btn-success btn-sm">+ Добавить фильм</a>
+                {% if user.vipbooking %}
+                    <a href="{% url 'vip_status' %}" class="btn btn-warning btn-sm">⭐ Мое VIP место</a>
+                {% else %}
+                    <a href="{% url 'vip_book' %}" class="btn btn-outline-warning btn-sm">Забронировать VIP</a>
+                {% endif %}
+                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Войти</a>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-sm">Регистрация</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
